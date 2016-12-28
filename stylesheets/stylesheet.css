@@ -245,3 +245,16 @@ a {
 .cf {
   zoom:1;
 }
+
+/*目录第二层样式*/
+.second-level-catalog{
+	text-indent:35px;
+}
+
+.first-level-catalog{
+	margin: 0 0 0 0;
+}
+
+.third-level-catalog {
+	text-indent:70px;
+}
