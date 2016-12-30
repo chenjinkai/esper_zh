@@ -248,7 +248,7 @@ a {
 
 /*目录第二层样式*/
 .second-level-catalog{
-	text-indent:35px;
+	padding-left:35px;
 }
 
 .first-level-catalog{
@@ -256,5 +256,5 @@ a {
 }
 
 .third-level-catalog {
-	text-indent:70px;
+	padding-left:70px;
 }
