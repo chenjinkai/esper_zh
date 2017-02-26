@@ -80,10 +80,44 @@
 		
 		<div class="first-level-title" id="1.3">1.3 支持CEP的esper引擎</div>
 		<p class="paragraph">
-			Esper的工作方式有一点类似颠覆性的数据库。Esper引擎运行程序存储查询并且让数据流过；而不是存储数据，在存储的数据上运行查询。
+			Esper的工作方式有一点类似颠覆性的数据库。Esper引擎运行程序存储查询并且让数据流过；而不是存储数据，在存储的数据上运行查询。当满足查询条件，能够从Esper引擎得到实时的响应。这样是一种连续的执行模型而不是一种需要提交请求的模型。
 		</p>
+		
+		<p class="paragraph">
+			Epser提供了两种机制来处理事件：事件模式和事件流查询。
+		</p>
+		
+		<p class="paragraph">
+			Esper提供了一种事件模式语言来定义基于表达式的事件模式匹配。模式匹配引擎的底层实现为状态机。这种处理事件匹配机制预期事件或事件组合序列存不存在，也包括基于时间相关的事件。
+		</p>
+		
+		<p class="paragraph">
+			Esper也提供事件序列查询，立足于时间序列分析需求和CEP应用。事件序列查询提供窗口（windows），聚合（aggregation），连接（join）和分析函数（analysis functions）来处理事件流。
+			这些查询遵从EPL语法。EPL被设计成类SQL语句，但是和SQL不同的是EPL采用了视图（views）而不是表。视图（views）表示按照不同操作基于数据流需要构造的数据，并且从事件流中派生数据。
+		</p>
+		<p class="paragraph">
+			Esper通过同一个API提供了这两种方式作为选择。
+		</p>
+		
+		<div class="first-level-title" id="1.4">1.4 需要的第三方库</div>
+		<p class="paragraph">
+			Esper需要在运行时引入的第三方jar：
+		</p>
+		<ul> 
+			<li><a href="http://www.antlr.org">ANTLR</a>是用于解析EPL语法和模式，并且生成语法树。ANTRL证书在lib目录里面。这个jar只在编译时有效。</li>
+			<li>CGLIB是一个代码生成库为了快速的函数调用。这个开源软件使用了Apache license。Apache 2.0 license在lib目录下。</li>
+			<li>Apache commons logging是一个日志API和LOG4j一起使用。使用时可以用SLF4j替换LOG4j或者其他日志组件。这个开源软件使用了Apache license。Apache 2.0 license在lib目录下。</li>
+		</ul>
+		<p class="paragraph">
+			Esper需要在编译和测试时需要引入的第三方jar：
+		</p>
+		<ul> 
+			<li>JUnit是一个伟大的测试框架。证书放在lib目录下，这个库只在构建的时候需要。</li>
+			<li>MySql connector库用来和测试SQL集成并且在运行自动化测试套件的时候需要。</li>
+		</ul>
     </div>
-
-    
+	<div class="footer">
+		
+	</div>
   </body>
 </html>
