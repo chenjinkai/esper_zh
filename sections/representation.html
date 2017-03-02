@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/print.css" media="print">
+
+    <title>事件的声明</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Esper Reference5.5.0文档翻译</h1>
+        <h2>esper中文文档翻译</h2>
+		<p>声明：此文档为本人翻译作品，可以免费阅读和共享，如有转载请注明出处，另外本文档不得用于商业目的。</p>
+        <section id="downloads">
+          <a href="https://github.com/chenjinkai/esper_zh/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/chenjinkai/esper_zh/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/chenjinkai/esper_zh" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+		<section id="main_content">
+						<!--第二章-->
+			<h3>
+			   <a id="event-representations" class="anchor first-level-catalog" href="#event-representations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. 事件的声明
+			 </h3>
+			<div class="second-level-catalog"><a href="#2.1">2.1 基于java对象的事件</a></div>
+			<div class="second-level-catalog"><a href="#2.2">2.2 事件属性</a></div>
+			<div class="third-level-catalog"><a href="#2.2.1">2.2.1 转义符号</a></div>
+			<div class="third-level-catalog"><a href="#2.2.2">2.2.2 expression as key or index value</a></div>
+			<div class="second-level-catalog"><a href="#2.3">2.3 动态事件属性</a></div>
+			<div class="second-level-catalog"><a href="#2.4">2.4 片段（Fragment）与片段类型</a></div>
+			<div class="second-level-catalog"><a href="#2.5">2.5 Plain-Old Java对象事件（Event）</a></div>
+			<div class="third-level-catalog"><a href="#2.5.1">2.5.1 java对象事件属性</a></div>
+			<div class="third-level-catalog"><a href="#2.5.2">2.5.2 属性名称</a></div>
+			<div class="third-level-catalog"><a href="#2.5.3">2.5.3 参数类型</a></div>
+			<div class="third-level-catalog"><a href="#2.5.4">2.5.4 索引和映射属性的Setter方法</a></div>
+			<div class="third-level-catalog"><a href="#2.5.5">2.5.5 已知限制</a></div>
+			<div class="second-level-catalog"><a href="#2.6">2.6  java.util.Map事件</a></div>
+			<div class="third-level-catalog"><a href="#2.6.1">2.6.1 概述</a></div>
+			<div class="third-level-catalog"><a href="#2.6.2">2.6.2 Map 属性</a></div>
+			<div class="third-level-catalog"><a href="#2.6.3">2.6.3 Map 父类型</a></div>
+			<div class="third-level-catalog"><a href="#2.6.4">2.6.4 Map 高级属性类型</a></div>
+			<div class="second-level-catalog"><a href="#2.7">2.7 对象数组（Object-array）事件</a></div>
+			<div class="third-level-catalog"><a href="#2.7.1">2.7.1 概述</a></div>
+			<div class="third-level-catalog"><a href="#2.7.2">2.7.2 对象数组属性</a></div>
+			<div class="third-level-catalog"><a href="#2.7.3">2.7.3 对象数组父类</a></div>
+			<div class="third-level-catalog"><a href="#2.7.4">2.7.4 对象数组高级属性类型</a></div>
+			<div class="second-level-catalog"><a href="#2.8">2.8 org.w3c.dom.Node XML 事件</a></div>
+			<div class="third-level-catalog"><a href="#2.8.1">2.8.1 模式定义xml事件</a></div>
+			<div class="third-level-catalog"><a href="#2.8.2">2.8.2 无模式定义xml事件</a></div>
+			<div class="third-level-catalog"><a href="#2.8.3">2.8.3 显示配置属性</a></div>
+			<div class="second-level-catalog"><a href="#2.9">2.9 事件其他的表现形式</a></div>
+			<div class="second-level-catalog"><a href="#2.10">2.10 更新，合并和版本事件（Versioning Events）</a></div>
+			<div class="second-level-catalog"><a href="#2.11">2.11 粗粒度事件</a></div>
+			<div class="second-level-catalog"><a href="#2.12">2.12 事件对象实例化并且被插入</a></div>
+			<div class="second-level-catalog"><a href="#2.13">2.13 事件表现形式的比较</a></div>
+			
+			<p class="paragraph">
+				这一章概述了模型和表示事件的区别。
+			</p>
+			
+			<p class="paragraph">
+				Esper  uses  the  term  event  type  to  describe  the  type  information  available  for  an  event representation.
+			</p>
+			
+			<p class="paragraph">
+				应用可以在启动的时候预先配置事件类型或者在运行时通过API或者EPL动态增加类型。
+			</p>
+    </div>
+	<div class="footer">
+		
+	</div>
+  </body>
+</html>
