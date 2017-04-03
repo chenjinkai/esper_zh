@@ -36,7 +36,7 @@
 			<div class="second-level-catalog"><a href="#2.1">2.1 基于java对象的事件</a></div>
 			<div class="second-level-catalog"><a href="#2.2">2.2 事件属性</a></div>
 			<div class="third-level-catalog"><a href="#2.2.1">2.2.1 转义符号</a></div>
-			<div class="third-level-catalog"><a href="#2.2.2">2.2.2 expression as key or index value</a></div>
+			<div class="third-level-catalog"><a href="#2.2.2">2.2.2 表达式作为key或者索引下标</a></div>
 			<div class="second-level-catalog"><a href="#2.3">2.3 动态事件属性</a></div>
 			<div class="second-level-catalog"><a href="#2.4">2.4 片段（Fragment）与片段类型</a></div>
 			<div class="second-level-catalog"><a href="#2.5">2.5 Plain-Old Java对象事件（Event）</a></div>
@@ -118,6 +118,102 @@
 					<li></li>
 				<ol>
 			</p>
+			
+			<p class="paragraph">
+				<code>create schema</code>语法允许在运行时定义一个事件。参照<a href="#">5.15 定义一个事件类型：create schema</a>
+			</p>
+			
+			<p class="paragraph">
+				<a href="#">15.6 事件和事件类型</a>解释了一个事件类型如何在EPL语句中可见，以及输出事件如何被投递。
+			</p>
+			<div class="first-level-catalog" id="2.1">2.1 基于java对象的事件</div>
+			
+			<p class="paragraph">
+				一个事件是过去发生动作或者状态改变的一条不可变记录。事件属性记录了事件的状态信息。
+			</p>
+			
+			<p class="paragraph">
+				Esper中，一个事件可以用如下任何方式表示（NEsper .NET, 参考<a href="#">.NET 事件基础对象</a>）
+			</p>
+			
+			表2.1. 事件底层java对象
+			<table id="table2.1" class="mytable">
+					<thead><td>Java类</td><td>描述</td></thead>
+					<tbody>
+						<tr><td><code>java.lang.Object</code></td><td>任何定义了getter方法符合JavaBeans约定的Java POJO；没有遵循JavaBeans约定的传统java类也可以用来声明事件。</td></tr>
+						<tr><td><code>java.util.Map</code></td><td>Map事件实现了<code>java.util.Map</code>接口每一个key-value实体表示一个属性值。</td></tr>
+						<tr><td><code>Object[] (array of object)</code></td><td>对象数组事件是一个对象数组，每一个数组元素是一个属性值。</td></tr>
+						<tr><td><code>org.w3c.dom.Node</code></td><td>XML文档对象模型（DOM）</td></tr>
+						<tr><td><code>org.apache.axiom.om.OMDocument or OMElement</code></td><td>XML-XML Streaming API（StAX）- Apache Axiom（EsperIO Package提供）</td></tr>
+						<tr><td><code>Application classes</code></td><td>通过扩展API的插件式事件声明</td></tr>
+					</tbody>
+			</table>
+			<p class="paragraph">
+				Esper提供了多种选择来表示一个事件。没有必要通过创建一个java类来声明一个对象。
+			</p>
+			
+			<p class="paragraph">
+				事件表示有如下共性：
+				<ol>
+					<li>所有事件声明支持嵌套、下标、字典属性（mapped properties）（又叫属性表达式），后面会做更详细介绍。对于嵌套层次没有限制。</li>
+					<li>所有事件声明提供事件类型元数据。包括嵌套属性。</li>
+					<li>所有事件声明允许转换一个事件或者部分属性到一个新的事件。转换的意思指选择事件或者事件的嵌套的属性图，然后在将来的语句中查询事件的属性或者嵌套的属性图。Apache Axiom事件声明是一个例外，目前支持转换事件属性，但是不支持转换事件本身。</li>
+					<li>Java Object，Map和Object-Array声明允许父类型。</li>
+				</ol>
+			</p>
+			
+			<p class="paragraph">
+				所有的事件声明方式的API都是同样的，这一章会把微小的例外说明清楚。
+			</p>
+			<p class="paragraph">
+				多种事件声明方式的好处如下：
+			</p>
+			
+			<ol>
+				<li>已经支持其中一种声明方式，处理前不需要变换成java对象</li>
+				<li>Event  representations  are  exchangeable,  reducing  or  eliminating  the  need  to  change statements when the event representation changes.</li>
+				<li>事件声明支持互操作，允许所有事件声明在同一个或者不同的语句中。</li>
+				<li>多种事件声明方式是的可以平衡性能，易用性，转换和尝试使用已有的事件类型元数据导入或者声明事件。</li>
+			</ol>
+			<div class="first-level-catalog" id="2.2">2.2 事件属性</div>
+			<p class="paragraph">
+				事件属性捕获了事件的状态信息。事件属性是简单地、可索引地、可映射地和可嵌套地。下表列出了在事件表达式中不同的事件属性类型和他们的语法。这个语法允许语句深层次的JavaBean对象图，XML结构和Map事件。
+			</p>
+			表2.2. 事件属性类型
+			<table id="table2.2" class="mytable">
+					<thead><td>类型</td><td>描述</td><td>语法</td><td>实例</td></thead>
+					<tbody>
+						<tr><td>简单（Simple）</td><td>一个拥有单个值得属性</td><td><code>name</code></td><td><code>sensorId</code></td></tr>
+						<tr><td>索引（Indexed）</td><td>被索引的属性存储了一个有序的集合（所有的都是同一个类型），可以通过非负的下边访问</td><td><code>name[index]</code></td><td><code>sensor[0]</code></td></tr>
+						<tr><td>映射（Mapped）</td><td>一个映射地属性存储了一个和key关联的集合对象（所有的都是同一个类型）</td><td><code>name('key')</code></td><td><code>sensor('light')</code></td></tr>
+						<tr><td>嵌套（Nested）</td><td>一个嵌套属性寄生于另一个属性</td><td><code>name.nestedname</code></td><td><code>sensor.value</code></td></tr>
+					</tbody>
+			</table>
+			<p class="paragraph">
+				组合使用也是有可能的。例如，一个可能的组合person.address('home').street[0]。
+			</p>
+			
+			<div class="first-level-catalog" id="2.2.1">2.2.1. 转义符号</div>
+			<p class="paragraph">
+				如果你的应用使用 java.util.Map, Object[] 或者XML来表示事件，事件属性名称包含了“.”字符。“\”可以用来转义“\”属性名称。
+			</p>
+			<p class="paragraph">
+				例如，如下所示的EPL语句，事件<code>MyEvent</code>中存在<code>part1.part2</code>:
+			</p>
+			<pre>select part1\.part2 from MyEvent</pre>
+			<p class="paragraph">
+				有时你的事件属性可能使用了EPL保留字符或者包含空格或者其他特殊字符。遇到这种情况你可以使用“`”来转义属性名称。下一个实例假设一个<code>Qutoe</code>事件有一个保留字为名称的<code>order</code>属性：
+			</p>
+			<pre>select `order`, price as `price.for.goods` from Quote</pre>
+			<p class="paragraph">
+				当转义映射或者索引属性的时候，确认“`”将映射地Key或者下表全部包含在内。
+			</p>
+			<p class="paragraph">
+				下面的EPL语句的select列表中的属性名称，包含了空格（eg. candidate book），有特殊字符“'”（eg. children's  books）的是一个索引属性(e.g. children's  books[0]) ，并且一个映射地属性有一个保留关键字 (e.g. book select('isbn')):
+			</p>
+			<pre>select  `candidate  book`  ,  `children's  books`[0],  `book  select`('isbn')  from MyEventType</pre>
+			
+			<div class="first-level-catalog" id="2.2.2">2.2.2. 表达式作为key或者索引下标</div>
     </div>
 	<div class="footer">
 		
