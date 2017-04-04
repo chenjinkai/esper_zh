@@ -115,48 +115,6 @@
 				<ol>
 					<li>所有事件声明支持嵌套、下标、字典属性（mapped properties）（又叫属性表达式），后面会做更详细介绍。对于嵌套层次没有限制。</li>
 					<li>所有事件声明提供事件类型元数据。包括嵌套属性。</li>
-					<li></li>
-				<ol>
-			</p>
-			
-			<p class="paragraph">
-				<code>create schema</code>语法允许在运行时定义一个事件。参照<a href="#">5.15 定义一个事件类型：create schema</a>
-			</p>
-			
-			<p class="paragraph">
-				<a href="#">15.6 事件和事件类型</a>解释了一个事件类型如何在EPL语句中可见，以及输出事件如何被投递。
-			</p>
-			<div class="first-level-catalog" id="2.1">2.1 基于java对象的事件</div>
-			
-			<p class="paragraph">
-				一个事件是过去发生动作或者状态改变的一条不可变记录。事件属性记录了事件的状态信息。
-			</p>
-			
-			<p class="paragraph">
-				Esper中，一个事件可以用如下任何方式表示（NEsper .NET, 参考<a href="#">.NET 事件基础对象</a>）
-			</p>
-			
-			表2.1. 事件底层java对象
-			<table id="table2.1" class="mytable">
-					<thead><td>Java类</td><td>描述</td></thead>
-					<tbody>
-						<tr><td><code>java.lang.Object</code></td><td>任何定义了getter方法符合JavaBeans约定的Java POJO；没有遵循JavaBeans约定的传统java类也可以用来声明事件。</td></tr>
-						<tr><td><code>java.util.Map</code></td><td>Map事件实现了<code>java.util.Map</code>接口每一个key-value实体表示一个属性值。</td></tr>
-						<tr><td><code>Object[] (array of object)</code></td><td>对象数组事件是一个对象数组，每一个数组元素是一个属性值。</td></tr>
-						<tr><td><code>org.w3c.dom.Node</code></td><td>XML文档对象模型（DOM）</td></tr>
-						<tr><td><code>org.apache.axiom.om.OMDocument or OMElement</code></td><td>XML-XML Streaming API（StAX）- Apache Axiom（EsperIO Package提供）</td></tr>
-						<tr><td><code>Application classes</code></td><td>通过扩展API的插件式事件声明</td></tr>
-					</tbody>
-			</table>
-			<p class="paragraph">
-				Esper提供了多种选择来表示一个事件。没有必要通过创建一个java类来声明一个对象。
-			</p>
-			
-			<p class="paragraph">
-				事件表示有如下共性：
-				<ol>
-					<li>所有事件声明支持嵌套、下标、字典属性（mapped properties）（又叫属性表达式），后面会做更详细介绍。对于嵌套层次没有限制。</li>
-					<li>所有事件声明提供事件类型元数据。包括嵌套属性。</li>
 					<li>所有事件声明允许转换一个事件或者部分属性到一个新的事件。转换的意思指选择事件或者事件的嵌套的属性图，然后在将来的语句中查询事件的属性或者嵌套的属性图。Apache Axiom事件声明是一个例外，目前支持转换事件属性，但是不支持转换事件本身。</li>
 					<li>Java Object，Map和Object-Array声明允许父类型。</li>
 				</ol>
