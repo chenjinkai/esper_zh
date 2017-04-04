@@ -172,6 +172,88 @@
 			<pre>select  `candidate  book`  ,  `children's  books`[0],  `book  select`('isbn')  from MyEventType</pre>
 			
 			<div class="first-level-catalog" id="2.2.2">2.2.2. 表达式作为key或者索引下标</div>
+			
+			<p class="paragraph">
+				key或者索引下标表达式必须放在圆括号中。表达式类型的key必须返回<code>String</code>类型的值。使用表达式索引下标，表达式必须返回<code>int</code>类型。
+			</p>
+			
+			<p class="paragraph">
+				下面的例子使用java类来说明；同样的规则用在了所有的事件声明上。假定一个类定义了这些属性（为了代码简洁没有展现出getters）
+			</p>
+			
+			<pre>
+public class MyEventType {
+	String myMapKey;
+	int myIndexValue;
+	int myInnerIndexValue;
+	Map<String, InnerType> innerTypesMap; // mapped property
+	InnerType[] innerTypesArray; // indexed property
+}
+public class InnerType {
+	String name;
+	int[] ids;
+}
+			</pre>
+			
+			<p class="paragraph">
+				下面的EPL语句展示了作为key的表达式和索引下标的表达式。
+			</p>
+			
+			<pre>
+select innerTypesMap('somekey'),  // returns map value for 'somekey'
+innerTypesMap(myMapKey),        // returns map value for myMapKey value (an expression)
+innerTypesArray[1],             // returns array value at index 1
+innerTypesArray(myIndexValue)   // returns array value at index myIndexValue (an expression)
+from MyEventType
+			</pre>
+			
+			<p class="paragraph">
+				点操作符可以被用来调用通过映射或者索引下标属性返回的对象的方法。通过使用点操作符遵循链式调用按照“<a href="#">9.6 点操作符</a>”
+			</p>
+			
+			<p class="paragraph">
+				下面的EPL语句展示了点操作符和表达式作为key和下标索引：
+			</p>
+			<pre>
+select innerTypesMap('somekey').ids[1],
+innerTypesMap(myMapKey).getIds(myIndexValue),
+innerTypesArray[1].ids[2],
+innerTypesArray(myIndexValue).getIds(myInnerIndexValue)
+from MyEventType
+			</pre>
+			
+			<p class="paragraph">
+				请注意如下的限制：
+				<ol>
+					<li>索引下标属性目前已经支持了表达式，并且需要时一个常量索引值。</li>
+					<li>当和映射或者索引属性一起使用点操作符，如果使用了表达式作为key或者索引下标，必须遵循方法的链式调用语法。</li>
+				</ol>
+			</p>
+			
+			<div class="first-level-catalog" id="2.3">2.3 动态事件属性</div>
+			<p class="paragraph">
+				动态（非检查）属性指的是不需要再运行时定义的事件属性。这种属性在运行时被处理：这些属性提供了<a target="_blank" href="https://en.wikipedia.org/wiki/Duck_typing">duck typing</a>功能
+			</p>
+			
+			<p class="paragraph">
+				动态属性背后的想法是，对于一个底层的事件声明，我们不需要总是提前知道所有属性。我们会查询一个底层事件，那些在编译时所没有定义的事件属性。这个概念对于那些变现丰富，面向对象的领域模型是非常有用的。
+			</p>
+			
+			<p class="paragraph">
+			动态属性的语法包含属性名称和一个问号。索引下标和映射和嵌套属性也可以是动态属性。<br/><br/>
+			表2.3. 事件属性类型
+			<table>
+				<thead><tr><td>类型</td><td>语法</td></tr></thead>
+				<tbody>
+					<tr><td>简单动态</td><td><code>name?</code></td></tr>
+					<tr><td>索引下标动态</td><td><code>name[index]?</code></td></tr>
+					<tr><td>映射动态</td><td><code>name('key')?</code></td></tr>
+					<tr><td>内嵌动态</td><td><code>name?.nestedPropertyName</code></td></tr>
+				</tbody>
+			</table>
+			</p>
+			
+			
     </div>
 	<div class="footer">
 		
