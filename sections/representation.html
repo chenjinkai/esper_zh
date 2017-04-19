@@ -276,6 +276,12 @@ select item.price? from OrderEvent
 select item.serviceName? from OrderEvent
 			</pre>
 			
+			<p class="paragraph">
+				考虑这样的实例OrderEvent有许多实现类，其中有些类有“timestamp”属性。下面的查询返回那些实现了OrderEvent的“timestamp”属性值。
+				<pre>
+select timestamp? from OrderEvent
+				</pre>
+			</p>
     </div>
 	<div class="footer">
 		
