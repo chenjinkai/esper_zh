@@ -242,17 +242,39 @@ from MyEventType
 			<p class="paragraph">
 			动态属性的语法包含属性名称和一个问号。索引下标和映射和嵌套属性也可以是动态属性。<br/><br/>
 			表2.3. 事件属性类型
-			<table>
-				<thead><tr><td>类型</td><td>语法</td></tr></thead>
-				<tbody>
-					<tr><td>简单动态</td><td><code>name?</code></td></tr>
-					<tr><td>索引下标动态</td><td><code>name[index]?</code></td></tr>
-					<tr><td>映射动态</td><td><code>name('key')?</code></td></tr>
-					<tr><td>内嵌动态</td><td><code>name?.nestedPropertyName</code></td></tr>
-				</tbody>
-			</table>
+				<table>
+					<thead><tr><td>类型</td><td>语法</td></tr></thead>
+					<tbody>
+						<tr><td>简单动态</td><td><code>name?</code></td></tr>
+						<tr><td>索引下标动态</td><td><code>name[index]?</code></td></tr>
+						<tr><td>映射动态</td><td><code>name('key')?</code></td></tr>
+						<tr><td>内嵌动态</td><td><code>name?.nestedPropertyName</code></td></tr>
+					</tbody>
+				</table>
 			</p>
 			
+			<p class="paragraph">
+				动态属性在存在的情况下总是返回<code>java.lang.Object</code>类型；在不存在的情况下，总是返回<code>null</code>
+			</p>
+			
+			<p class="paragraph">
+				作为一个实例，考虑一个名为OrderEvent的事件，包含“item”属性。“item”属性是<code>Object</code>类型，并且保持了一个Service或者Product的引用。
+			</p>
+			
+			<p class="paragraph">		  假设Service和Product类提供了一个“price”属性。通过动态属性，我们创建一个查询，这个查询可以覆盖到Service和Product的“price”属性。
+			</p>
+			
+			<pre>
+select item.price? from OrderEvent
+			</pre>
+			
+			<p class="paragraph">
+				第二个实例，假设Service类包含一个“serviceName”属性，这个属性在Product里面不存在。那么下面的查询语句，对于Service会返回属性值，对于Product会返回null。
+			</p>
+			
+			<pre>
+select item.serviceName? from OrderEvent
+			</pre>
 			
     </div>
 	<div class="footer">
