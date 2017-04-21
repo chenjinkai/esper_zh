@@ -281,7 +281,32 @@ select item.serviceName? from OrderEvent
 				<pre>
 select timestamp? from OrderEvent
 				</pre>
+				上面的查询返回一个单列<code>Object</code>类型的值。“timestamp?”
 			</p>
+			
+			<p class="paragraph">
+				当动态属性被嵌套使用，那么所有下级属性都被认为是动态属性。下面的实例查询“detail”动态属性返回的“direction”属性：
+				<pre>
+select detail?.direction from OrderEvent
+				</pre>
+				和下面的是相等的
+				<pre>
+select detail?.direction? from OrderEvent
+				</pre>
+			</p>
+			
+			<p class="paragraph">
+				通常与动态属性一起使用的有如下这些函数：
+				<ul>
+					<li><code>cast</code>函数将动态属性值（或者值表达式）转换成指定类型。</li>
+					<li><code>exists</code>函数通过返回<code>true</code>或者<code>false</code>来判断是否动态属性值存在。</li>
+					<li><code>instanceof</code>函数检查动态属性值是否是给定类型的。</li>
+					<li><code>typeof</code>函数返回<code></code></li>
+				</ul>
+				动态属性如下声明方式都是支持的：Java-Objects，Map，Object-array和DOM事件。
+			</p>
+			
+			<div class="first-level-catalog" id="2.4">2.4 片段和片段类型</div>
     </div>
 	<div class="footer">
 		
