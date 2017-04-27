@@ -307,6 +307,27 @@ select detail?.direction? from OrderEvent
 			</p>
 			
 			<div class="first-level-catalog" id="2.4">2.4 片段和片段类型</div>
+			
+			<p class="paragraph">
+				一个事件的属性可以也是事件。Esper为这种类型的事件使用术语片段和片段类型。最好的实例是一个模式匹配两个或者更多事件，并且输出事件包含匹配的事件作为片段。换句话说，输出事件可以是有进一步的事件和片段组成的组合事件。
+			</p>
+			
+			<p class="paragraph">
+				片段和类型元数据可以允许应用程序去访问组合事件，在不使用java反射API的情况下，并且降低对于底层事件声明的耦合。API会在<a href="#">15.6 事件和事件类型</a>进一步描述。
+			</p>
+			
+			<div class="first-level-catalog" id="2.5">2.5  Plain-Old Java Object 事件</div>
+			
+			<p class="paragraph">
+				NEsper请看<a href="#">.NET Object Events</a>
+			</p>
+			
+			<p class="paragraph">
+				Plain-old  Java  object指的是通过getter函数暴露时间属性的对象实例。事件类或者接口不用必须满足JavaBean定义；然而由于Esper引擎包含事件属性，JavaBean的getter函数必须被声明或者一个访问方式和访问函数可能通过配置进行定义。
+			</p>
+			<p class="paragraph">
+				Esper支持JavaBeans风格事件类，这些类可以扩展一个超类或者实现一个或者更多的接口。Esper事件模式和EPL语句可以引用Java接口类和抽象类。
+			</p>
     </div>
 	<div class="footer">
 		
