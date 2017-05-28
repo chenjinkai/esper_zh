@@ -328,6 +328,38 @@ select detail?.direction? from OrderEvent
 			<p class="paragraph">
 				Esper支持JavaBeans风格事件类，这些类可以扩展一个超类或者实现一个或者更多的接口。Esper事件模式和EPL语句可以引用Java接口类和抽象类。
 			</p>
+			<p class="paragraph">
+				由于事件是记录一个过去的状态改变或者动作，所以相关的事件属性不可以改变。这不是硬性规定，esper也接受可变对象。
+			</p>
+			<p class="paragraph">			
+				不需要实现<code>hashCode</code>和<code>equals</code>函数。这连个函数不会影响Epser引擎的行为。
+			</p>
+			<p class="paragraph">
+				请看<a href="#">16章，配置</a>那么些没有遵循javaBean规范约定，需要额外的进行配置。通过配置也可以实现控制属性值大小写敏感。相关章节<a href="#" >16.4.1.3 非JavaBean和遗留java类</a>
+			</p>
+			
+			<div class="first-level-catalog" id="2.5.1">2.5.1. java对象事件属性</div>
+			<p class="paragraph">
+				前面提到，不同的属性类型被标准JavaBean定义的不同的属性类型支持，一些其他的被Esper单独支持.
+				<ul>
+					<li><code>Simple</code>——单值属性。底层也许是一个java原生类型，或者一个更复杂java对象。</li>
+					<li><code>Indexed</code>——可索引属性存储一个有序的对象集合，可以通过非负的整数来访问单个对象。</li>
+					<li><code>Mapped</code>——作为标准JavaBeans的扩展，Esper任何属性都可以被当成键值对来处理。</li>
+					<li><code>Nexted</code>——嵌套的属性是一个寄生于其他java对象的属性。</li>
+				</ul>
+			</p>
+			<p class="paragraph">
+				如下，假设有一个<code>NewEmployeeEvent</code>事件类。这个例子的Mapped和Indexed属性返回java对象，但是也返回java原生类型。<code>Address</code>对象和<code>Employee</code>是nested类型的。他们包含各自的属性，例如街道名称和员工姓名。
+				<pre>
+public class NewEmployeeEvent {
+	public String getFirstName();
+	public Address getAddress(String type);
+	public Employee getSubordinate(int index);
+	public Employee[] getAllSubordinates();
+}				</pre>
+				Simple事件属性需要一个getter函数返回属性值。在这个实例，<code>getFirstName</code>返回String类型的<code>firstName</code>。
+				Indexed事件属性需要如下getter函数。接收integer类型参数，返回属性值，类似<code>getSubordinate</code>函数，或者一个返回Array，又或是一个实现<code>Iterable</code>。
+			</p>
     </div>
 	<div class="footer">
 		
