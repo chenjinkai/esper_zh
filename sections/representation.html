@@ -42,7 +42,7 @@
 			<div class="second-level-catalog"><a href="#2.5">2.5 Plain-Old Java对象事件（Event）</a></div>
 			<div class="third-level-catalog"><a href="#2.5.1">2.5.1 java对象事件属性</a></div>
 			<div class="third-level-catalog"><a href="#2.5.2">2.5.2 属性名称</a></div>
-			<div class="third-level-catalog"><a href="#2.5.3">2.5.3 参数类型</a></div>
+			<div class="third-level-catalog"><a href="#2.5.3">2.5.3 泛型</a></div>
 			<div class="third-level-catalog"><a href="#2.5.4">2.5.4 索引和映射属性的Setter方法</a></div>
 			<div class="third-level-catalog"><a href="#2.5.5">2.5.5 已知限制</a></div>
 			<div class="second-level-catalog"><a href="#2.6">2.6  java.util.Map事件</a></div>
@@ -358,8 +358,76 @@ public class NewEmployeeEvent {
 	public Employee[] getAllSubordinates();
 }				</pre>
 				Simple事件属性需要一个getter函数返回属性值。在这个实例，<code>getFirstName</code>返回String类型的<code>firstName</code>。
-				Indexed事件属性需要如下getter函数。接收integer类型参数，返回属性值，类似<code>getSubordinate</code>函数，或者一个返回Array，又或是一个实现<code>Iterable</code>。
 			</p>
+		<p class="paragraph">
+			Indexed事件属性需要如下getter函数。接收integer类型参数，返回属性值，类似<code>getSubordinate</code>函数，或者一个返回Array，又或是一个实现了<code>Iterable</code>的类。如实例<code>getAllSubordinates</code>，返回了一个<code>Employee</code>数组，也可以返回<code>Iterable</code>。在一个EPL或者事件模式语句，通过<code>property[index]</code>语法实现属性访问。
+		</p>
+		<p class="paragraph">
+			Mapped事件属性需要一个接收String类型key的getter函数，例如：<code>getAddress</code>函数。在EPL或者事件模式语句，通过<code>property('key')</code>语法访问mapped属性。
+		</p>
+		
+		<p class="paragraph">
+			Nested事件属性需要一个getter函数返回嵌套对象。<code>getAddress getSubordinate</code>函数返回嵌套对象是mapped和indexed属性。EPL或者事件模式语句，通过<code>property.nestedProperty</code>语法来访问。
+		</p>
+		
+		<p class="paragraph">
+			所有事件模式和EPL语句，允许使用indexed，mapped和nested属性（或者任意组合使用）。如下实例展示了在事件模式表达式中过滤器不同的组合的使用方式（每行是一个单独的EPL语句）。
+		</p>
+		<pre>
+every NewEmployeeEvent(firstName='myName')
+every NewEmployeeEvent(address('home').streetName='Park Avenue')
+every NewEmployeeEvent(subordinate[0].name='anotherName')
+every NewEmployeeEvent(allSubordinates[1].name='thatName')
+every NewEmployeeEvent(subordinate[0].address('home').streetName='WaterStreet')
+		</pre>
+		
+		<p class="paragraph">
+			类似的，这种语法可以用在EPL语句中，任何需要需要事件属性名称出现的地方，select列表，where条件，或者join语句。
+		</p>
+		
+		<pre>
+select firstName, address('work'), subordinate[0].name, subordinate[1].name
+from NewEmployeeEvent
+where address('work').streetName = 'Park Ave'
+		</pre>
+		
+		<div class="first-level-catalog" id="2.5.2">2.5.2. 属性名称</div>
+		<p class="paragraph">
+			属性名称符合java标准规范：<code>java.beans.Introspector</code>和函数<code>getBeanInfo</code>返回来自于getter函数的属性名称。另外，Esper提供了可配置的方式关闭属性名称大小写敏感。下标是一个getter函数和属性名称的实例：
+			表2.4. JavaBeans-style getter函数和属性名称
+			<table>
+				<thead><tr><td>Method</td><td>Property Name</td><td>Example</td></tr></thead>
+				<tbody>
+					<tr><td>getPrice()</td><td><code>price</code></td><td><code>select price from MyEvent</code></td></tr>
+					<tr><td>getNAME()</td><td><code>NAME</code></td><td><code>select NAME from MyEvent</code></td></tr>
+					<tr><td>getItemDesc()</td><td><code>itemDesc</code></td><td><code>select itemDesc from MyEvent</code></td></tr>
+					<tr><td>getQ()</td><td><code>q</code></td><td><code>select q from MyEvent</code></td></tr>
+					<tr><td>getQN()</td><td><code>QN</code></td><td><code>select QN from MyEvent</code></td></tr>
+					<tr><td>getqn()</td><td><code>qn</code></td><td><code>select qn from MyEvent</code></td></tr>
+					<tr><td>gets()</td><td><code>s</code></td><td><code>select s from MyEvent</code></td></tr>
+				</tbody>
+			</table>	
+		</p>
+		
+		<div class="first-level-catalog" id="2.5.3">2.5.3. 泛型</div>
+		<p class="paragraph">
+			当getter函数返回一个泛型是，例如<code>Iterable<MyEventData></code>或者<code>Map<String, MyEventData></code>，那么属性表达式可用通过泛型对象访问到属性。
+			
+			<pre>
+public class NewEmployeeEvent {
+	public String getName();
+	public Iterable<EducationHistory> getEducation();
+	public Map<String, Address> getAddresses();
+}
+			</pre>
+			
+			<pre>
+select name, education, education[0].date, addresses('home').street
+from NewEmployeeEvent				
+			</pre>
+		</p>
+		
+		<div class="first-level-catalog" id="2.5.4">2.5.4. 索引和映射属性的Setter方法</div>
     </div>
 	<div class="footer">
 		
