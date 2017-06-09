@@ -43,7 +43,7 @@
 			<div class="third-level-catalog"><a href="#2.5.1">2.5.1 java对象事件属性</a></div>
 			<div class="third-level-catalog"><a href="#2.5.2">2.5.2 属性名称</a></div>
 			<div class="third-level-catalog"><a href="#2.5.3">2.5.3 泛型</a></div>
-			<div class="third-level-catalog"><a href="#2.5.4">2.5.4 索引和映射属性的Setter方法</a></div>
+			<div class="third-level-catalog"><a href="#2.5.4">2.5.4 Indexed和Mapped属性的Setter方法</a></div>
 			<div class="third-level-catalog"><a href="#2.5.5">2.5.5 已知限制</a></div>
 			<div class="second-level-catalog"><a href="#2.6">2.6  java.util.Map事件</a></div>
 			<div class="third-level-catalog"><a href="#2.6.1">2.6.1 概述</a></div>
@@ -427,7 +427,67 @@ from NewEmployeeEvent
 			</pre>
 		</p>
 		
-		<div class="first-level-catalog" id="2.5.4">2.5.4. 索引和映射属性的Setter方法</div>
+		<div class="first-level-catalog" id="2.5.4">2.5.4. Indexed和Mapped属性的Setter方法</div>
+		<p class="paragraph">
+			一个EPL语句可以通过类暴露的setter函数，更新一个事件的indexed和mapped属性。indexed属性的setter函数必须被命名为<code>set属性名称</code>，并且必须传入两个参数：分别为int和Object类型。mapped属性的setter函数必须被命名为<code>set属性名称</code>，并且必须传入两个参数：分别为String和Object类型。下面是一个事件的setter函数实例，props是一个mapped属性，array是一个indexed属性：
+			<pre>
+public class MyEvent {
+	private Map props = new HashMap();
+    private Object[] array = new Object[10];
+    public void setProps(String name, Object value) {
+		props.put(name, value);
+    }
+	public void setArray(int index, Object value) {
+		array[index] = value;
+	}
+	// ... also provide regular JavaBean getters and setters for all properties  
+			</pre>
+		</p>
+		
+		<p class="paragraph">
+			更新mapped和indexed属性值的语句实例：
+			<pre>
+update istream MyEventStream set props('key') = 'abc', array[2] = 100
+			</pre>
+		</p>
+		
+		<div class="first-level-catalog"><a href="#2.5.5">2.5.5 已知限制</a></div>
+		<p class="paragraph">
+			Esper为了快速访问事件属性，使用字节码生成技术。当字节码生成失败的时候，引擎会记录一个高级日志，并且使用java反射来读取属性。
+			一个已知的限制是，当一个接口存在一个特殊类型的属性，并且实际事件返回一个子类对象。引擎记录一个告警日志，并且使用反射获取这个属性。
+		</p>
+		
+		<div class="first-level-catalog"><a href="#2.6">2.6  java.util.Map事件</a></div>
+		Nesper .NET <a href="#">C.8章节 IDictionary事件</a>
+		<div class="first-level-catalog"><a href="#2.6.1">2.6.1  概述</a></div>
+		<p class="paragraph">
+			事件可以被实现了<code>java.util.Map</code>接口的对象表示。Map事件的属性可以通过<code>java.util.Map</code>接口的get函数来访问。
+		</p>
+		<p class="paragraph">
+			和Object-array事件类型类似，Map事件可以方便的在运行时改变类型。
+		</p>
+		<p class="paragraph">
+			一个给定的Map事件类型可以有一个或者多个上层类型，这些上层类型必须是Map事件类型。上层类型的所有属性都可以通过类型自身访问到。另外，anywhere within EPL that an event type name of a Map supertype is used, any of its Map subtypes and their subtypes match that expression.
+		</p>
+		
+		<p class="paragraph">
+			程序可以在运行时往Map事件增加属性，使用<code>updateMapEventType</code>。但是只能被增加，不能被修改和删除，嵌套事件也可以被增加。运行时配置也允许删除Map事件类型并且可以和新的类型信息一起增加回去。
+		</p>
+		<p class="paragraph">
+			当你的程序通过提供一个类型名称配置了一个Map事件。在定义后面的Map或者Object-array事件类型的时候，可以使用这个类型作为属性类型或者数组的类型。
+		</p>
+		
+		<p class="paragraph">
+			Map事件中的一对多关系通过数组来表示。一个Map事件中的属性可能是原生类型数组，java对象数组，Map事件数组或者对象数组的数组。
+		</p>
+		
+		<p class="paragraph">
+			引擎通过<code>EPRuntime</code>接口中的<code>sendEvent(Map map, String eventTypeName)</code>函数可以处理<code>java.util.Map</code>事件。Map事件的键必须是<code> java.util.String</code>类型，这是为了引擎可以发现处理通过模式或者EPL语句定义的事件属性名称。
+		</p>
+		
+		<p class="paragraph">
+			引擎不会校验Map事件属性的名称或者值。程序应该保证被传入的对象复合<code>create schema</code>定义的属性名称和类型，又或是使用运行时或静态配置的事件类型。
+		</p>
     </div>
 	<div class="footer">
 		
