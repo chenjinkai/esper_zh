@@ -488,6 +488,18 @@ update istream MyEventStream set props('key') = 'abc', array[2] = 100
 		<p class="paragraph">
 			引擎不会校验Map事件属性的名称或者值。程序应该保证被传入的对象复合<code>create schema</code>定义的属性名称和类型，又或是使用运行时或静态配置的事件类型。
 		</p>
+		
+		<div class="first-level-catalog"><a href="#2.6.2">2.6.2  Map属性</a></div>
+		
+		<p class="paragraph">
+			Map事件属性可以是任何类型。Map事件属性可以是java对象，或者<code>java.util.Map</code>(或者数组)，或者<code>Object[]</code>
+			
+			<ul>
+				<li>java对象可以通过nested，indexed，mapped以及之前提到的动态属性来查询；</li>
+				<li>Map属性允许嵌套任意深度，因此可以被用来表示负责信息。nexted，indexed，mapped和动态属性语法可以被用来查询复杂类型；</li>
+				<li><code>Object[]</code>属性允许嵌套任意深度。nested，indexed，mapped和动态属性语法可以被用来查询复杂类型的事件。</li>
+			</ul>
+		</p>
     </div>
 	<div class="footer">
 		
